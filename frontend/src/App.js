@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import SmashBoys from "./components/Smashboys";
 import Home from "./components/Home";
+import  NavBar from "./components/Navbar"
 
 function App() {
   const dispatch = useDispatch();
