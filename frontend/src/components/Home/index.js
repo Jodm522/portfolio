@@ -12,8 +12,8 @@ function Home() {
    <div className="aboutMeDiv">
     <div className="greetingDiv">Hey, I'm </div>
     <div className="nameDiv">James Mayfield.</div>
-      <div className="aboutMe1">Fresh programmer looking for my chance to break into the industry and prove myself.</div>
-      <div className="aboutMe2">I'm a software engineer specializing in teamwork and AAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</div>
+      <div className="aboutMe1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+      <div className="aboutMe2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
    </div>
   </>
  )
