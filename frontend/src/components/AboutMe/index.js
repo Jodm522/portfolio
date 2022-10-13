@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+
 import "./about.css";
-import Shrek from "./shrek.jpg" 
+import Shrek from "./shrek.jpg"
+import Me from './me.jpg' 
 function About() {
 //   const dispatch = useDispatch();
 //   useEffect(() => {}, [dispatch]);
@@ -15,14 +17,14 @@ function About() {
         <div className="aboutMeTitle">About Me</div>
 <div className="aboutMePageDiv">
     <div className="aboutMeText">
-    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciun"
+    Hey, I'm James. I love creating and building interesting and unique things. My experience at App Academy taught me not only how to build and design programs, but also how to work with others to find unique and impressive solutions to complicated problems. My time as an AEMT taught me team dynamics, leadership, and how to remain effective and efficient under pressure. In my current field I've grown from a team member to a team leader, mentor, teacher, and key part of important and effective change. Now I'm ready to use the skills I've learned and mastered to enter a new field, learn it, master it, and with time become as much as an asset as I am in my current field to a new one.
     </div>
     <div className="aboutMeImage">
-        <img className="aboutMeImg"src={Shrek} alt="ME"></img>
+        <img className="aboutMeImg"src={Me} alt="ME"></img>
     </div>
 
    </div>
-   <div className="aboutMeText2">"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."</div>
+   <div className="aboutMeText2">The entirety of my experiences have taught me how to both work in a team and how to learn my role quickly. My experiences as a captain have taught me how to be an effective leader, as well as how to me an effective member of a team. My time as a training officer helped me realize what I need to learn and adapt to situations quickly. I hope to use my skills and abilities to join a new team and integrate quickly, so I can rapidly become an effective and integral part.</div>
 
         </div>
    
