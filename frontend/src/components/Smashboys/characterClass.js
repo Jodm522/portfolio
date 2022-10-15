@@ -13,13 +13,13 @@ export class Sprite {
         //! Canvas image setup
         this.img = new Image();
         this.character = character
-        this.currentImage = null //! necessary to keep from re-rendering the first frame when keys are held
+        this.currentImage = facing === "right"? character.sprites.rIdle:character.sprites.lIdle //! necessary to keep from re-rendering the first frame when keys are held
     //? Setup for player rendering and movement
         //! Setup player default display
-
         this.facing = facing; //* facing has a value of "left" or "right" and is used to change the character sprite appropriately
         this.img.src = facing === "right"? character.sprites.rIdle.imageSrc:character.sprites.lIdle.imageSrc ;
         this.framesMax = facing === "right"? character.sprites.rIdle.framesMax:character.sprites.lIdle.framesMax;
+        this.numProjectiles = 0
         //! Default states
         this.isAttacking = false; //* Is attacking is used to change the sprite and create a hitbox  
         this.lastkey = null; //* Lastkey is used to help change and determine facing
@@ -40,22 +40,17 @@ export class Sprite {
         width: 75,
         height: 75,
       };
+      
+      
     }
-
-
-
 
     draw() {
       if (this.isAttacking) {
-        this.ctx.fillStyle = "yellow";
-        this.ctx.fillRect(
-          this.attackBox.position.x,
-          this.attackBox.position.y,
-          this.attackBox.width,
-          this.attackBox.height
-        );
+        
       }
     }
+
+
 
     animateFrames() {
       this.framesElapsed++
@@ -68,7 +63,8 @@ export class Sprite {
       }
     }
   
-    update() {
+    update() 
+    {
 
       this.ctx.drawImage(
         this.img,
@@ -76,7 +72,7 @@ export class Sprite {
         0,
         this.img.width/ this.framesMax,
         this.img.height,
-        this.position.x,
+        this.position.x + this.currentImage.offset,
         this.position.y,
         this.img.width/this.framesMax,
         this.img.height
@@ -100,15 +96,41 @@ export class Sprite {
       if (this.position.x + this.width + this.velocity.x <= 0) {
         this.velocity.x = 0;
       }
+      if (this.position.x <=0){
+        this.velocity.x = 0
+        this.velocity.x = 25
+      }
+      if (this.position.x >=1000){
+        this.velocity.x = 0
+        this.velocity.x = -25
+      }
     }
 
+    
 
 
-    attack() {
-      this.isAttacking = true;
+
+    attack(type) {
+      switch(type){
+        case "melee":
+          this.spriteChange("attack")
+        this.isAttacking = true;
       setTimeout(() => {
         this.isAttacking = false;
-      }, 100);
+        this.spriteChange("idle")
+      }, 250)
+      break
+      case "range":
+          this.spriteChange("range")
+         
+      setTimeout(() => {
+        this.isAttacking = false;
+        this.spriteChange("idle")
+      }, 250)
+
+
+      }
+      
     }
 
 facingChange(facing){
@@ -127,10 +149,7 @@ switch(direction){
    this.velocity.y=-2 
    break  
 };
-function resolveHit(stunned, spriteChange){
-    stunned = false
-    spriteChange("idle") 
-}
+
  setTimeout(function(){this.stunned = false; this.spriteChange("idle")}.bind(this), 500)
 }
 spriteChange(sprite){   
@@ -139,8 +158,8 @@ if(this.facing === "left"){
             
 
         case"idle":
-        if( this.currentImage !== this.character.sprites.lIdle.imageSrc){
-            this.currentImage = this.character.sprites.lIdle.imageSrc
+        if( this.currentImage !== this.character.sprites.lIdle){
+            this.currentImage = this.character.sprites.lIdle
             this.img.src = this.character.sprites.lIdle.imageSrc
             this.framesMax= this.character.sprites.lIdle.framesMax
             this.framesCurrent = 0 
@@ -148,21 +167,38 @@ if(this.facing === "left"){
         break
 
         case"walk":
-        if(this.currentImage !== this.character.sprites.lWalk.imageSrc){
-            this.currentImage = this.character.sprites.lWalk.imageSrc
+        if(this.currentImage !== this.character.sprites.lWalk){
+            this.currentImage = this.character.sprites.lWalk
             this.img.src = this.character.sprites.lWalk.imageSrc
             this.framesMax= this.character.sprites.lWalk.framesMax
             this.framesCurrent = 0
         }
         break
         case"hit":
-        if(this.currentImage !== this.character.sprites.lHit.imageSrc){
-            this.currentImage = this.character.sprites.lHit.imageSrc
+        if(this.currentImage !== this.character.sprites.lHit){
+            this.currentImage = this.character.sprites.lHit
             this.img.src = this.character.sprites.lHit.imageSrc
             this.framesMax= this.character.sprites.lHit.framesMax
             this.framesCurrent = 0
         }
+        break
+        case "attack":
+              if(this.currentImage !== this.character.sprites.lAttack){
+                this.currentImage = this.character.sprites.lAttack
+                this.img.src =this.character.sprites.lAttack.imageSrc
+                this.framesMax =this.character.sprites.lAttack.framesMax
+                this.framesCurrent = 0
+              } 
+              break 
+        case"range":
+        if(this.currentImage !== this.character.sprites.lRange){
+          this.currentImage = this.character.sprites.lRange
+          this.img.src =this.character.sprites.lRange.imageSrc
+          this.framesMax =this.character.sprites.lRange.framesMax
+          this.framesCurrent = 0
+        } 
         break 
+
     
     }
     }
@@ -171,8 +207,8 @@ if(this.facing === "left"){
                 
     
             case"idle":
-            if( this.currentImage !== this.character.sprites.rIdle.imageSrc){
-                this.currentImage = this.character.sprites.rIdle.imageSrc
+            if( this.currentImage !== this.character.sprites.rIdle){
+                this.currentImage = this.character.sprites.rIdle
                 this.img.src = this.character.sprites.rIdle.imageSrc
                 this.framesMax= this.character.sprites.rIdle.framesMax
                 this.framesCurrent = 0 
@@ -180,8 +216,8 @@ if(this.facing === "left"){
             break
     
             case"walk":
-            if(this.currentImage !== this.character.sprites.rWalk.imageSrc){
-                this.currentImage = this.character.sprites.rWalk.imageSrc
+            if(this.currentImage !== this.character.sprites.rWalk){
+                this.currentImage = this.character.sprites.rWalk
                 this.img.src = this.character.sprites.rWalk.imageSrc
                 this.framesMax= this.character.sprites.rWalk.framesMax
                 this.framesCurrent = 0
@@ -189,15 +225,29 @@ if(this.facing === "left"){
             break   
         
             case"hit":
-            if(this.currentImage !== this.character.sprites.rHit.imageSrc){
-                this.currentImage = this.character.sprites.rHit.imageSrc
+            if(this.currentImage !== this.character.sprites.rHit){
+                this.currentImage = this.character.sprites.rHit
                 this.img.src = this.character.sprites.rHit.imageSrc
                 this.framesMax= this.character.sprites.rHit.framesMax
                 this.framesCurrent = 0
             }
             break 
-        
-        
+            case "attack":
+              if(this.currentImage !== this.character.sprites.rAttack){
+                this.currentImage = this.character.sprites.rAttack
+                this.img.src =this.character.sprites.rAttack.imageSrc
+                this.framesMax =this.character.sprites.rAttack.framesMax
+                this.framesCurrent = 0
+              } 
+              break       
+              case"range":
+        if(this.currentImage !== this.character.sprites.rRange){
+          this.currentImage = this.character.sprites.rRange
+          this.img.src =this.character.sprites.rRange.imageSrc
+          this.framesMax =this.character.sprites.rRange.framesMax
+          this.framesCurrent = 0
+        } 
+        break 
         }
         }
 
