@@ -11,7 +11,7 @@ import { SuperAttack } from "./superClass";
 function SmashBoys() {
 
   const standin2 = {
-    name : "Jimmy",
+    name : "Drew",
     superFunctionality:{
       startingPos:{ x:"player", y:530},
       velocity: {x:0, y:0},
@@ -41,7 +41,7 @@ function SmashBoys() {
 
     sprites:{ 
       rIdle:{ 
-      imageSrc: `./smashBoys/players/jimmy/Jimmyidle.png`,
+      imageSrc: `./smashBoys/players/andrew/DrewIdleRight.png`,
       framesMax: 2, 
       offset: 0
     },
@@ -51,12 +51,12 @@ function SmashBoys() {
       offset: 0
     },
     rWalk:{ 
-      imageSrc: `./smashBoys/players/jimmy/JimmyRightWalk.png`,
+      imageSrc: `./smashBoys/players/andrew/DrewRightWalk.png`,
       framesMax: 8,
       offset: 0
     },
     lWalk:{ 
-      imageSrc: `./smashBoys/players/jimmy/JimmyLeftWalk.png`,
+      imageSrc: `../smashBoys/players/andrew/DrewLeftWalk.png`,
       framesMax: 8,
       offset: 0
     },
@@ -215,8 +215,8 @@ function SmashBoys() {
   }
   }
 
-  const player2Char = standin1
-  const player1Char = standin2
+  const player2Char = standin2
+  const player1Char = standin1
   let player1Projectile = null
   let player2Projectile = null
   let player1Super = null
@@ -329,12 +329,12 @@ function SmashBoys() {
      
       //P2 Movement
       if(!player2.stunned){
-      if (keys.lArrow.pressed) {
+      if (keys.lArrow.pressed&& player2.position.x > 0) {
         player2.velocity.x = -5;
         player2.facing = "left";
         player2.spriteChange("walk")
         // player2.img.src = player2.character.sprites.lWalk.imageSrc
-      } else if (keys.rArrow.pressed) {
+      } else if (keys.rArrow.pressed && player2.position.x < 1000) {
         player2.velocity.x = 5;
         player2.facing = "right";
         player2.spriteChange("walk")
@@ -392,6 +392,11 @@ function SmashBoys() {
       player2Super = new SuperAttack(startingPos, velocity,size,sprites,destroyFunc, onCollide, ctx)
    
     }
+    // window.addEventListener("gamepadconnected", (e) => {
+    //   console.log(e.gamepad)
+    // })
+    let gamepads = navigator.getGamepads()
+    console.log(gamepads)
     window.addEventListener("keydown", (e) => {
       switch (e.key) {
         //player1
