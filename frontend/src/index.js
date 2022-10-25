@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+// import "./index.css";
 import App from "./App";
+import Navbar from "./components/Navbar";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import configureStore from "./store";
@@ -16,6 +17,7 @@ function Root() {
   return (
     <Provider store={store}>
       <BrowserRouter>
+      <Navbar/>
         <App />
       </BrowserRouter>
     </Provider>

@@ -1,0 +1,47 @@
+:root {
+    --main-background: #05336B;
+    --secondary-background: #07192d;
+    --color1:#59CBE8;
+    --color2:#0C70EB;
+    --color3:#74a5e0;
+  }
+
+  *{
+   background-color: var(--secondary-background); 
+  }
+
+  .aboutMeDiv{
+    /* background-color:var(--main-background); */
+    width: 750px;
+    margin: 50px auto;
+    height: 450px;
+    /* border: 5px solid var(--color3); */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .greetingDiv{
+    color: var(--color1);
+   background-color: inherit;
+   width:500px;
+    margin:15px 0px;
+    height:fit-content;
+    font-size: 20px;
+  }
+
+  .nameDiv{
+    height: fit-content;
+    font-size: 50px;
+    text-align:justify;
+    color: aliceblue;
+   
+  }
+  .aboutMe1{
+    font-size: 40px;
+    color: var(--color3);
+  }
+
+  .aboutMe2{
+    color: var(--color3);
+    font-size: 25px;
+  }

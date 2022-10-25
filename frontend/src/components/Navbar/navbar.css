@@ -1,0 +1,52 @@
+:root {
+    --main-background: #05336B;
+    --secondary-background: #07192d;
+    --color1:#59CBE8;
+    --color2:#0C70EB;
+    --color3:#74a5e0;
+  }
+
+
+
+.navbarContainer{
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.homeIcon{
+    color: aliceblue;
+    font-size: 45px;
+    opacity: 1;
+  transition: 0.3s;
+}
+.navbarRight{
+    display: flex;
+    flex-direction: row;
+    color:var(--color3);
+    justify-content: space-around;
+    width: 750px;
+    text-align: center;
+}
+.homeIcon:hover{
+    cursor: pointer;
+    color: rgba(240, 248, 255, 0.566);
+    font-size: 45px;
+}
+
+.navbarDiv{
+    display: flex;
+    flex-direction: row;
+    transition: 0.3s;
+    margin: auto;
+}
+
+.divNumber{
+    color: var(--color1);
+    margin-right: 5px;
+}
+ .navbarDiv:hover{
+ color: var(--color1);
+ cursor: pointer;
+ }

@@ -2,127 +2,246 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import "./smashboys.css";
-import BackgroundImage from "./Images/Arena-1-redux.png";
+import { BGSprite } from "./backgroundClass";
+import { Sprite} from "./characterClass";
+import Ranged from "./rangedClass";
+import detectHits from "./detectHits";
+import { SuperAttack } from "./superClass";
+// import BackgroundImage from "./Images/Arena-1-redux.png";
 function SmashBoys() {
+
+  const standin2 = {
+    name : "Jimmy",
+    superFunctionality:{
+      startingPos:{ x:"player", y:530},
+      velocity: {x:0, y:0},
+      size: {width:30, height:50},
+      sprites:{ initial:
+        {imageSrc:"./smashBoys/players/andrew/MonkeyFish.png",
+        framesMax:1,
+        offset: 0},
+
+        onChange:{imageSrc:"./smashBoys/players/andrew/MonkeyAttack.png",
+        framesMax:4,
+        offset: 0,
+        height: 75,
+      width: 30},
+        
+      },
+      destroyFunc: (ctx)=>{return (ctx.position.x > 1000)},
+      onCollide:(thisSuper, otherPlayer)=>{
+        otherPlayer.takeHit("right")
+        thisSuper.position = otherPlayer.position
+        thisSuper.img.src= thisSuper.sprites.onChange.imageSrc
+        thisSuper.framesMax= thisSuper.sprites.onChange.framesMax
+        thisSuper.offset= thisSuper.sprites.onChange.offset
+        thisSuper = null
+      }
+    },
+
+    sprites:{ 
+      rIdle:{ 
+      imageSrc: `./smashBoys/players/jimmy/Jimmyidle.png`,
+      framesMax: 2, 
+      offset: 0
+    },
+    lIdle:{ 
+      imageSrc: `./smashBoys/players/jimmy/JimmyidleReverse.png`,
+      framesMax: 2,
+      offset: 0
+    },
+    rWalk:{ 
+      imageSrc: `./smashBoys/players/jimmy/JimmyRightWalk.png`,
+      framesMax: 8,
+      offset: 0
+    },
+    lWalk:{ 
+      imageSrc: `./smashBoys/players/jimmy/JimmyLeftWalk.png`,
+      framesMax: 8,
+      offset: 0
+    },
+    lHit:{
+      imageSrc:"./smashBoys/players/jimmy/JimmyHitLeft.png",
+      framesMax: 2,
+      offset: 0
+    },
+    rHit:{
+      imageSrc:"./smashBoys/players/jimmy/JimmyHitRight.png",
+      framesMax: 2,
+      offset: 0
+    },
+    lAttack:{
+      imageSrc:"./smashBoys/players/jimmy/JimmyAttackLeft.png",
+      framesMax:3,
+      offset: -18
+    },
+    rAttack:{
+      imageSrc:"./smashBoys/players/jimmy/JimmyAttackRight.png",
+      framesMax:3,
+      offset: 0
+    },
+    lRange: {
+      imageSrc:"./smashBoys/players/jimmy/JimmyRangeL.png",
+      framesMax:3,
+      offset: 0
+    },
+    rRange: {
+      imageSrc:"./smashBoys/players/jimmy/JimmyRangeR.png",
+      framesMax:3,
+      offset: 0
+    },
+    lSuper:{
+      imageSrc:"./smashBoys/players/jimmy/jimmySuperInit.png",
+      framesMax:2,
+      offset: 0
+    },
+    rSuper:{
+      imageSrc:"./smashBoys/players/jimmy/jimmySuperInit.png",
+      framesMax:2,
+      offset: 0
+    },
+    
+    projectileSprites:{
+
+      lProjectile:{
+        imageSrc:"./smashBoys/players/jimmy/JimmyProjectileLeft.png",
+        framesMax:2,
+        offset:0
+      },
+      rProjectile:{
+        imageSrc:"./smashBoys/players/jimmy/JimmyProjectileRight.png",
+        framesMax:2,
+        offset:0
+      }
+    },
+  }
+  }
+  const standin1 = {
+    name : "Jimmy",
+
+    superFunctionality:{
+      startingPos:{x:20, y:420},
+      velocity: {x:20, y:0},
+      size: {width:450, height:150},
+      sprites:{
+        initial:{
+          imageSrc:"./smashBoys/players/jimmy/jimmySuperSprite.png",
+          framesMax:2,
+          offset: 0
+        },
+        
+      },
+      destroyFunc: (ctx)=>{return (ctx.position.x > 1000)},
+      onCollide:(thisSuper, otherPlayer)=>{
+        otherPlayer.takeHit("right")
+      }
+    },
+
+    sprites:{ 
+      rIdle:{ 
+      imageSrc: `./smashBoys/players/jimmy/Jimmyidle.png`,
+      framesMax: 2, 
+      offset: 0
+    },
+    lIdle:{ 
+      imageSrc: `./smashBoys/players/jimmy/JimmyidleReverse.png`,
+      framesMax: 2,
+      offset: 0
+    },
+    rWalk:{ 
+      imageSrc: `./smashBoys/players/jimmy/JimmyRightWalk.png`,
+      framesMax: 8,
+      offset: 0
+    },
+    lWalk:{ 
+      imageSrc: `./smashBoys/players/jimmy/JimmyLeftWalk.png`,
+      framesMax: 8,
+      offset: 0
+    },
+    lHit:{
+      imageSrc:"./smashBoys/players/jimmy/JimmyHitLeft.png",
+      framesMax: 2,
+      offset: 0
+    },
+    rHit:{
+      imageSrc:"./smashBoys/players/jimmy/JimmyHitRight.png",
+      framesMax: 2,
+      offset: 0
+    },
+    lAttack:{
+      imageSrc:"./smashBoys/players/jimmy/JimmyAttackLeft.png",
+      framesMax:3,
+      offset: -18
+    },
+    rAttack:{
+      imageSrc:"./smashBoys/players/jimmy/JimmyAttackRight.png",
+      framesMax:3,
+      offset: 0
+    },
+    lRange: {
+      imageSrc:"./smashBoys/players/jimmy/JimmyRangeL.png",
+      framesMax:3,
+      offset: 0
+    },
+    rRange: {
+      imageSrc:"./smashBoys/players/jimmy/JimmyRangeR.png",
+      framesMax:3,
+      offset: 0
+    },
+    lSuper:{
+      imageSrc:"./smashBoys/players/jimmy/jimmySuperInit.png",
+      framesMax:2,
+      offset: 0
+    },
+    rSuper:{
+      imageSrc:"./smashBoys/players/jimmy/jimmySuperInit.png",
+      framesMax:2,
+      offset: 0
+    },
+    
+    projectileSprites:{
+
+      lProjectile:{
+        imageSrc:"./smashBoys/players/jimmy/JimmyProjectileLeft.png",
+        framesMax:2,
+        offset:0
+      },
+      rProjectile:{
+        imageSrc:"./smashBoys/players/jimmy/JimmyProjectileRight.png",
+        framesMax:2,
+        offset:0
+      }
+    },
+  }
+  }
+
+  const player2Char = standin1
+  const player1Char = standin2
+  let player1Projectile = null
+  let player2Projectile = null
+  let player1Super = null
+  let player2Super = null
   const canvas = useRef(null);
 
   useEffect(() => {
-    //Setup canvas background
     const ctx = canvas.current.getContext("2d");
-
-    const gravity = 0.2;
-
-    // Sprite constructor
-    class Sprite {
-      constructor({ position, velocity, color, facing }) {
-        this.position = position;
-        this.velocity = velocity;
-        this.height = 150;
-        this.width = 50;
-        this.lastkey = null;
-        this.color = color;
-        this.isAttacking = false;
-        this.facing = facing;
-        this.attackBox = {
-          position: {
-            x: this.position.x,
-            y: this.position.y,
-          },
-          offset: facing === "right" ? { x: 0, y: 0 } : { x: -50, y: 0 },
-
-          width: 100,
-          height: 50,
-        };
-      }
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-
-        //AttackBox
-        if (this.isAttacking) {
-          ctx.fillStyle = "yellow";
-          ctx.fillRect(
-            this.attackBox.position.x,
-            this.attackBox.position.y,
-            this.attackBox.width,
-            this.attackBox.height
-          );
-        }
-      }
-
-      update() {
-        this.draw();
-        this.attackBox.position.x =
-          this.position.x + (this.facing === "right" ? 0 : -50);
-        this.attackBox.position.y = this.position.y;
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
-
-        if (this.position.y + this.height + this.velocity.y >= 576) {
-          this.velocity.y = 0;
-        } else this.velocity.y += gravity;
-
-        if (this.position.x + this.width + this.velocity.x <= 0) {
-          this.velocity.x = 0;
-        }
-      }
-      attack() {
-        this.isAttacking = true;
-        setTimeout(() => {
-          this.isAttacking = false;
-        }, 100);
-      }
-    }
-    //RENDER OTHER SPRITES
-    class BGSprite {
-      constructor({ position, imageSrc }) {
-        this.position = position;
-        this.height = 1040;
-        this.width = 576;
-        this.img = new Image();
-        this.img.src = imageSrc;
-      }
-
-      draw() {
-        // ctx.drawImage(this.image, this.position.x, this.position.y);
-        var canvas = ctx.canvas;
-        var hRatio = canvas.width / this.img.width;
-        var vRatio = canvas.height / this.img.height;
-        var ratio = Math.min(hRatio, vRatio);
-        var centerShift_x = (canvas.width - this.img.width * ratio) / 2;
-        var centerShift_y = (canvas.height - this.img.height * ratio) / 2;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-          this.img,
-          0,
-          0,
-          this.img.width,
-          this.img.height,
-          centerShift_x,
-          centerShift_y,
-          this.img.width * ratio,
-          this.img.height * ratio
-        );
-      }
-      update() {
-        this.draw();
-      }
-    }
+   
     const background = new BGSprite({
       position: { x: 0, y: 0 },
-      imageSrc: BackgroundImage,
+      imageSrc: `./smashBoys/backgrounds/Arena-1-redux.png`,
+      ctx
     });
 
-    ///REnder Players
+    ///Rnder Players
     const player1 = new Sprite({
       position: {
         x: 0,
         y: 0,
       },
       velocity: { x: 0, y: 0 },
-      color: "blue",
-      //   offset: { x: 0, y: 0 },
       facing: "right",
+      character : player1Char,
+      ctx
     });
 
     const player2 = new Sprite({
@@ -131,17 +250,11 @@ function SmashBoys() {
         y: 100,
       },
       velocity: { x: 0, y: 0 },
-      color: "red",
-      //   offset: { x: -50, y: 0 },
       facing: "left",
+      character:player2Char,
+      ctx
     });
 
-    const renderCanvas = () => {
-      ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, 1024, 576);
-    };
-
-    renderCanvas();
 
     const keys = {
       a: {
@@ -166,98 +279,151 @@ function SmashBoys() {
     function animate() {
       window.requestAnimationFrame(animate);
 
-      renderCanvas();
       background.update();
+
       player1.update();
       player2.update();
-
-      //Stop player movement in X if they're grounded
-      if (player1.position.y + player1.height + player1.velocity.y >= 576)
+      if(player1Projectile){
+        player1Projectile.update();
+      }
+      if(player2Projectile){
+        player2Projectile.update();
+      }
+      if(player1Super){
+        player1Super.update();
+        if(player1Super.destroyMe){
+        player1Super.position.x = 0
+        player1Super = null
+      }}
+      if(player2Super){
+        player2Super.update();
+        if(player2Super.destroyMe){
+        player2Super.position.x = 0
+        player2Super = null
+      }}
+      //Stop player movement in Y if they're grounded
+      if (player1.position.y + player1.height + player1.velocity.y >= 556)
         player1.velocity.x = 0;
-      if (player2.position.y + player2.height + player2.velocity.y >= 576)
+      if (player2.position.y + player2.height + player2.velocity.y >= 556)
         player2.velocity.x = 0;
 
       //P1 Movement
-      if (keys.a.pressed && player1.lastkey === "a") {
+      if(!player1.stunned){
+      if (keys.a.pressed && player1.lastkey === "a" && player1.position.x > 0) {
         player1.velocity.x = -5;
         player1.facing = "left";
-      } else if (keys.d.pressed && player1.lastkey === "d") {
+        player1.spriteChange("walk")
+        
+      } else if (keys.d.pressed && player1.lastkey === "d" && player1.position.x < 1000) {
         player1.velocity.x = 5;
         player1.facing = "right";
+        player1.spriteChange("walk")
       }
       if (
         keys.w.pressed &&
-        player1.position.y + player1.height + player1.velocity.y >= 576
+        player1.position.y + player1.height + player1.velocity.y >= 556
       ) {
         player1.velocity.y = -10;
       }
+      }
+     
       //P2 Movement
-
+      if(!player2.stunned){
       if (keys.lArrow.pressed) {
         player2.velocity.x = -5;
         player2.facing = "left";
+        player2.spriteChange("walk")
+        // player2.img.src = player2.character.sprites.lWalk.imageSrc
       } else if (keys.rArrow.pressed) {
         player2.velocity.x = 5;
         player2.facing = "right";
+        player2.spriteChange("walk")
       }
       if (
         keys.uArrow.pressed &&
-        player2.position.y + player2.height + player2.velocity.y >= 576
+        player2.position.y + player2.height + player2.velocity.y >= 556
       ) {
         player2.velocity.y = -10;
       }
-      //Detect Collisions
-      //P1 attacks
-      if (
-        player1.attackBox.position.x + player1.attackBox.width >=
-          player2.position.x &&
-        player1.attackBox.position.x + player1.attackBox.width <=
-          player2.position.x + player2.width &&
-        player1.attackBox.position.y + player1.attackBox.height >=
-          player2.position.y &&
-        player1.attackBox.position.y <= player2.position.y + player2.height &&
-        player1.isAttacking
-      ) {
-        player1.isAttacking = false;
       }
-      if (
-        player2.attackBox.position.x + player2.attackBox.width >=
-          player1.position.x &&
-        player2.attackBox.position.x + player2.attackBox.width <=
-          player1.position.x + player2.width &&
-        player2.attackBox.position.y + player2.attackBox.height >=
-          player1.position.y &&
-        player2.attackBox.position.y <= player1.position.y + player1.height &&
-        player2.isAttacking
-      ) {
-        player2.isAttacking = false;
-      }
-      //   console.log(player2.attackBox.offset);
+
+      
+      
+      detectHits(player1, player2, player1Projectile, player2Projectile,player1Super,player2Super)
     }
 
     animate();
+    
+    function makePlayer1Projectile(position,facing,sprites,ctx){
+      player1Projectile = new Ranged({position,facing,sprites,ctx})
 
+      setTimeout(()=>{ player1Projectile = null}, 500)
+    
+      
+     }
+
+
+     function makePlayer1Super(stats){
+      let {startingPos, velocity,size,sprites,destroyFunc,onCollide} = stats  
+      let whereToStart = {...startingPos}
+      let playerPos = {...player1.position}
+      whereToStart.x === "player"? whereToStart.x = playerPos.x: whereToStart.x=whereToStart.x
+      whereToStart.y === "player"? whereToStart.y = playerPos.y:whereToStart.x=whereToStart.x
+      console.log(startingPos)
+      player1Super = new SuperAttack(whereToStart, velocity,size,sprites,destroyFunc,onCollide, ctx)
+      
+    }
+
+
+     function makePlayer2Projectile(position,facing,sprites,ctx){
+      player2Projectile = new Ranged({position,facing,sprites,ctx})
+
+      setTimeout(()=>{ player2Projectile = null}, 500)
+    
+      
+     }
+ function makePlayer2Super(stats){
+      let {startingPos, velocity,size,sprites,destroyFunc,onCollide} = stats  
+      let playerPos = {...player2.position}
+       
+      startingPos.x === "player"? startingPos.x = playerPos.x:
+      startingPos.y === "player"? startingPos.y = playerPos.y:
+      console.log(startingPos)
+      player2Super = new SuperAttack(startingPos, velocity,size,sprites,destroyFunc, onCollide, ctx)
+   
+    }
     window.addEventListener("keydown", (e) => {
-      console.log(e);
       switch (e.key) {
         //player1
         case "d":
           keys.d.pressed = true;
           player1.lastkey = "d";
-
           break;
         case "a":
           keys.a.pressed = true;
           player1.lastkey = "a";
+          
           break;
         case "w":
           keys.w.pressed = true;
           break;
         case "q":
-          player1.attack();
+          player1.attack("melee");
           break;
-
-        //player2
+        case "e":
+          if(!player1Projectile){
+            player1.attack("range");
+          let position = {...player1.position}
+          let sprites = {...player1.character.sprites.projectileSprites}
+            makePlayer1Projectile(position, player1.facing, sprites, ctx)
+          }
+        break
+        case "s":
+          let player1SuperStats = {...player1.character.superFunctionality}
+        makePlayer1Super(player1SuperStats)
+        break
+          //player2
+        
         case "ArrowLeft":
           keys.lArrow.pressed = true;
           player2.lastkey = "lArrow";
@@ -269,8 +435,20 @@ function SmashBoys() {
         case "ArrowUp":
           keys.uArrow.pressed = true;
           break;
+          case "ArrowDown":
+            let player2SuperStats = {...player2.character.superFunctionality}
+            makePlayer2Super(player2SuperStats)
+            break;
         case "/":
-          player2.attack();
+          player2.attack("melee");
+          break;
+        case ".":
+          if(!player2Projectile){
+            player2.attack("range");
+          let position = {...player2.position}
+          let sprites = {...player2.character.sprites.projectileSprites}
+            makePlayer2Projectile(position, player2.facing, sprites, ctx)
+          }
           break;
       }
     });
@@ -278,9 +456,11 @@ function SmashBoys() {
       switch (e.key) {
         case "d":
           keys.d.pressed = false;
+          player1.spriteChange("idle")
           break;
         case "a":
           keys.a.pressed = false;
+          player1.spriteChange("idle")
           break;
         case "w":
           keys.w.pressed = false;
@@ -289,11 +469,11 @@ function SmashBoys() {
         //player2
         case "ArrowLeft":
           keys.lArrow.pressed = false;
-
+          player2.spriteChange("idle")
           break;
         case "ArrowRight":
           keys.rArrow.pressed = false;
-
+          player2.spriteChange("idle")
           break;
         case "ArrowUp":
           keys.uArrow.pressed = false;
