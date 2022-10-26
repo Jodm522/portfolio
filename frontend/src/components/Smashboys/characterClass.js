@@ -10,6 +10,9 @@ export class Sprite {
         //! Size
         this.height = 75;
         this.width = 50;
+        this.meleeDamage = character.meleeDamage;
+        this.hp = character.hp
+        this.healthBarImage = character.healthBarImage;
         //! Canvas image setup
         this.img = new Image();
         this.character = character
@@ -65,7 +68,7 @@ export class Sprite {
   
     update() 
     {
-
+      // console.log(this.healthBarImage)
       this.ctx.drawImage(
         this.img,
         this.framesCurrent * (this.img.width / this.framesMax),
@@ -136,9 +139,12 @@ export class Sprite {
 facingChange(facing){
 this.facing = facing
 }
-takeHit(direction){
+takeHit(direction, damage){
+  if(!this.stunned){
+    this.hp -= damage
 this.spriteChange("hit")
 this.stunned = true
+console.log(this.hp);
 switch(direction){
   case "left":
    this.velocity.x = -10;
@@ -148,9 +154,11 @@ switch(direction){
    this.velocity.x = 10;
    this.velocity.y=-2 
    break  
+  }
+setTimeout(function(){this.stunned = false; this.spriteChange("idle")}.bind(this), 500)
 };
 
- setTimeout(function(){this.stunned = false; this.spriteChange("idle")}.bind(this), 500)
+ 
 }
 spriteChange(sprite){   
 if(this.facing === "left"){

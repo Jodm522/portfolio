@@ -1,14 +1,14 @@
 export default class Ranged {
-    constructor({position, velocity, facing, sprites, ctx}){
+    constructor({position, facing, functionality, ctx,}){
       this.ctx = ctx
       this.position=position
-      this.velocity= facing === "right"?{x:10}: {x:-10}
+      this.velocity= facing === "right"?{x:functionality.velocity}: {x:(functionality.velocity*-1)}
       this.facing = facing
-      this.sprites = sprites
+      this.sprites = functionality.projectileSprites
       this.exists = true
       this.height = 25;
       this.width = 25;
-
+      this.damage = functionality.damage;
       this.img = new Image();
       this.img.src = facing === "right"? this.sprites.rProjectile.imageSrc:this.sprites.lProjectile.imageSrc
       this.framesMax = facing === "right"?this.sprites.rProjectile.framesMax:this.sprites.lProjectile.framesMax
@@ -22,8 +22,8 @@ export default class Ranged {
           x: this.position.x,
           y: this.position.y,
         },  
-        width: 25,
-        height: 25,
+        width: functionality.size.x, 
+        height: functionality.size.y,
       };
 
       
