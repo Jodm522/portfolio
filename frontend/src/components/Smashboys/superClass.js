@@ -1,5 +1,5 @@
 export class SuperAttack {
-    constructor(position,velocity,size,sprites, destroyFunc,onCollide, ctx){
+    constructor(position,velocity,size,sprites, destroyFunc,onCollide,damage, ctx){
       this.ctx = ctx
       this.position= position
       this.velocity= velocity
@@ -14,6 +14,7 @@ export class SuperAttack {
       this.img.src = this.sprites.initial.imageSrc
       this.framesMax = this.sprites.initial.framesMax
       this.offset = this.sprites.initial.offset
+      this.damage = damage
       this.framesCurrent = 1  //* Used to determine which sprite on a sheet to show
       this.framesElapsed = 0  //* Counts frames to reset loop through spritesheet frames
       this.framesHold = 10    //* adjusts how many frames between sprite change

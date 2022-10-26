@@ -6,13 +6,18 @@ import { BGSprite } from "./backgroundClass";
 import { Sprite} from "./characterClass";
 import Ranged from "./rangedClass";
 import detectHits from "./detectHits";
+import HealthBar from "./healthBarClass";
 import { SuperAttack } from "./superClass";
 // import BackgroundImage from "./Images/Arena-1-redux.png";
 function SmashBoys() {
 
   const standin2 = {
     name : "Drew",
+    healthBarImage:"./smashBoys/players/andrew/DrewHealthbarPic.png",
+    hp:1000,
+    meleeDamage: 20,
     superFunctionality:{
+      damage:52,
       startingPos:{ x:"player", y:530},
       velocity: {x:0, y:0},
       size: {width:30, height:50},
@@ -30,7 +35,8 @@ function SmashBoys() {
       },
       destroyFunc: (ctx)=>{return (ctx.position.x > 1000)},
       onCollide:(thisSuper, otherPlayer)=>{
-        otherPlayer.takeHit("right")
+        // console.log(thisSuper.damage)
+        otherPlayer.takeHit("right", thisSuper.damage)
         thisSuper.position = otherPlayer.position
         thisSuper.img.src= thisSuper.sprites.onChange.imageSrc
         thisSuper.framesMax= thisSuper.sprites.onChange.framesMax
@@ -38,7 +44,26 @@ function SmashBoys() {
         thisSuper = null
       }
     },
-
+    projectileFunctionality:{
+      damage:10,
+      stayTime:750,
+      size:{x:30,y:10},
+      velocity:15,
+      projectileSprites:{
+        
+        lProjectile:{
+          imageSrc:"./smashBoys/players/andrew/DrewProjectileLeft.png",
+          framesMax:2,
+          offset:0
+        },
+        rProjectile:{
+          imageSrc:"./smashBoys/players/andrew/DrewProjectileRight.png",
+          framesMax:2,
+          offset:0
+        }
+  
+      },
+    },
     sprites:{ 
       rIdle:{ 
       imageSrc: `./smashBoys/players/andrew/DrewIdleRight.png`,
@@ -46,7 +71,7 @@ function SmashBoys() {
       offset: 0
     },
     lIdle:{ 
-      imageSrc: `./smashBoys/players/jimmy/JimmyidleReverse.png`,
+      imageSrc: `./smashBoys/players/andrew/DrewIdleLeft.png`,
       framesMax: 2,
       offset: 0
     },
@@ -61,33 +86,33 @@ function SmashBoys() {
       offset: 0
     },
     lHit:{
-      imageSrc:"./smashBoys/players/jimmy/JimmyHitLeft.png",
+      imageSrc:"./smashBoys/players/andrew/DrewHitLeft.png",
       framesMax: 2,
       offset: 0
     },
     rHit:{
-      imageSrc:"./smashBoys/players/jimmy/JimmyHitRight.png",
+      imageSrc:"./smashBoys/players/andrew/DrewHitRight.png",
       framesMax: 2,
       offset: 0
     },
     lAttack:{
-      imageSrc:"./smashBoys/players/jimmy/JimmyAttackLeft.png",
+      imageSrc:"./smashBoys/players/andrew/DrewLeftAttack.png",
       framesMax:3,
       offset: -18
     },
     rAttack:{
-      imageSrc:"./smashBoys/players/jimmy/JimmyAttackRight.png",
+      imageSrc:"./smashBoys/players/andrew/DrewRightAttack.png",
       framesMax:3,
       offset: 0
     },
     lRange: {
-      imageSrc:"./smashBoys/players/jimmy/JimmyRangeL.png",
-      framesMax:3,
+      imageSrc:"./smashBoys/players/andrew/DrewRangeLeft.png",
+      framesMax:2,
       offset: 0
     },
     rRange: {
-      imageSrc:"./smashBoys/players/jimmy/JimmyRangeR.png",
-      framesMax:3,
+      imageSrc:"./smashBoys/players/andrew/DrewRangeRight.png",
+      framesMax:2,
       offset: 0
     },
     lSuper:{
@@ -101,25 +126,15 @@ function SmashBoys() {
       offset: 0
     },
     
-    projectileSprites:{
-
-      lProjectile:{
-        imageSrc:"./smashBoys/players/jimmy/JimmyProjectileLeft.png",
-        framesMax:2,
-        offset:0
-      },
-      rProjectile:{
-        imageSrc:"./smashBoys/players/jimmy/JimmyProjectileRight.png",
-        framesMax:2,
-        offset:0
-      }
-    },
   }
   }
   const standin1 = {
     name : "Jimmy",
-
+    healthBarImage:"./smashBoys/players/jimmy/JimHealthbarPic.png",
+    meleeDamage: 15,
+    hp:1000,
     superFunctionality:{
+      damage:200,
       startingPos:{x:20, y:420},
       velocity: {x:20, y:0},
       size: {width:450, height:150},
@@ -131,10 +146,32 @@ function SmashBoys() {
         },
         
       },
+      
+
       destroyFunc: (ctx)=>{return (ctx.position.x > 1000)},
       onCollide:(thisSuper, otherPlayer)=>{
-        otherPlayer.takeHit("right")
+        otherPlayer.takeHit("right", thisSuper.damage)
+
       }
+    },
+    projectileFunctionality:{
+      damage:20,
+      velocity:10,
+      stayTime:500,
+      size:{x:25,y:25},
+      projectileSprites:{
+        lProjectile:{
+          imageSrc:"./smashBoys/players/jimmy/JimmyProjectileLeft.png",
+          framesMax:2,
+          offset:0
+        },
+        rProjectile:{
+          imageSrc:"./smashBoys/players/jimmy/JimmyProjectileRight.png",
+          framesMax:2,
+          offset:0
+        }
+      },
+
     },
 
     sprites:{ 
@@ -199,19 +236,7 @@ function SmashBoys() {
       offset: 0
     },
     
-    projectileSprites:{
-
-      lProjectile:{
-        imageSrc:"./smashBoys/players/jimmy/JimmyProjectileLeft.png",
-        framesMax:2,
-        offset:0
-      },
-      rProjectile:{
-        imageSrc:"./smashBoys/players/jimmy/JimmyProjectileRight.png",
-        framesMax:2,
-        offset:0
-      }
-    },
+   
   }
   }
 
@@ -225,7 +250,7 @@ function SmashBoys() {
 
   useEffect(() => {
     const ctx = canvas.current.getContext("2d");
-   
+    
     const background = new BGSprite({
       position: { x: 0, y: 0 },
       imageSrc: `./smashBoys/backgrounds/Arena-1-redux.png`,
@@ -254,7 +279,8 @@ function SmashBoys() {
       character:player2Char,
       ctx
     });
-
+    let player1healthBar = new HealthBar({src: "./smashBoys/player1HealthBar.png", ctx, position:{x:4,y:10}, healthBarImage:player1.healthBarImage,healthBarImagePosition:{x:12,y:21}})
+    let player2healthBar = new HealthBar({src: "./smashBoys/player2HealthBar.png", ctx, position:{x:570,y:10},healthBarImage:player2.healthBarImage,healthBarImagePosition:{x:914,y:21}})
 
     const keys = {
       a: {
@@ -283,6 +309,8 @@ function SmashBoys() {
 
       player1.update();
       player2.update();
+      player1healthBar.update()
+      player2healthBar.update()
       if(player1Projectile){
         player1Projectile.update();
       }
@@ -354,49 +382,47 @@ function SmashBoys() {
 
     animate();
     
-    function makePlayer1Projectile(position,facing,sprites,ctx){
-      player1Projectile = new Ranged({position,facing,sprites,ctx})
+    function makePlayer1Projectile(position,facing,functionality,ctx){
+      player1Projectile = new Ranged({position,facing,functionality,ctx})
 
-      setTimeout(()=>{ player1Projectile = null}, 500)
+      setTimeout(()=>{ player1Projectile = null}, functionality.stayTime)
     
       
      }
 
 
      function makePlayer1Super(stats){
-      let {startingPos, velocity,size,sprites,destroyFunc,onCollide} = stats  
+      let {startingPos, velocity,size,sprites,destroyFunc,onCollide, damage} = stats  
       let whereToStart = {...startingPos}
       let playerPos = {...player1.position}
       whereToStart.x === "player"? whereToStart.x = playerPos.x: whereToStart.x=whereToStart.x
       whereToStart.y === "player"? whereToStart.y = playerPos.y:whereToStart.x=whereToStart.x
       console.log(startingPos)
-      player1Super = new SuperAttack(whereToStart, velocity,size,sprites,destroyFunc,onCollide, ctx)
+      player1Super = new SuperAttack(whereToStart, velocity,size,sprites,destroyFunc,onCollide, damage, ctx)
       
     }
 
 
-     function makePlayer2Projectile(position,facing,sprites,ctx){
-      player2Projectile = new Ranged({position,facing,sprites,ctx})
+     function makePlayer2Projectile(position,facing,functionality,ctx){
+      player2Projectile = new Ranged({position,facing,functionality,ctx})
 
-      setTimeout(()=>{ player2Projectile = null}, 500)
+      setTimeout(()=>{ player2Projectile = null}, functionality.stayTime)
     
       
      }
  function makePlayer2Super(stats){
-      let {startingPos, velocity,size,sprites,destroyFunc,onCollide} = stats  
+      let {startingPos, velocity,size,sprites,destroyFunc,onCollide, damage} = stats  
+      let whereToStart = {...startingPos}
       let playerPos = {...player2.position}
-       
-      startingPos.x === "player"? startingPos.x = playerPos.x:
-      startingPos.y === "player"? startingPos.y = playerPos.y:
+      whereToStart.x === "player"? whereToStart.x = playerPos.x: whereToStart.x=whereToStart.x
+      whereToStart.y === "player"? whereToStart.y = playerPos.y:whereToStart.x=whereToStart.x
       console.log(startingPos)
-      player2Super = new SuperAttack(startingPos, velocity,size,sprites,destroyFunc, onCollide, ctx)
-   
+      player2Super = new SuperAttack(whereToStart, velocity,size,sprites,destroyFunc,onCollide,damage, ctx)
+
     }
     // window.addEventListener("gamepadconnected", (e) => {
     //   console.log(e.gamepad)
     // })
-    let gamepads = navigator.getGamepads()
-    console.log(gamepads)
     window.addEventListener("keydown", (e) => {
       switch (e.key) {
         //player1
@@ -419,8 +445,8 @@ function SmashBoys() {
           if(!player1Projectile){
             player1.attack("range");
           let position = {...player1.position}
-          let sprites = {...player1.character.sprites.projectileSprites}
-            makePlayer1Projectile(position, player1.facing, sprites, ctx)
+          let functionality = {...player1.character.projectileFunctionality}
+            makePlayer1Projectile(position, player1.facing, functionality, ctx)
           }
         break
         case "s":
@@ -451,8 +477,8 @@ function SmashBoys() {
           if(!player2Projectile){
             player2.attack("range");
           let position = {...player2.position}
-          let sprites = {...player2.character.sprites.projectileSprites}
-            makePlayer2Projectile(position, player2.facing, sprites, ctx)
+          let functionality = {...player2.character.projectileFunctionality}
+            makePlayer2Projectile(position, player2.facing, functionality, ctx)
           }
           break;
       }

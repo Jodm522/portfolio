@@ -24,9 +24,9 @@ export default function detectHits(player1, player2, player1Projectile, player2P
         &&
         player1.isAttacking
       ) {
+        player1.isAttacking= false
+        player2.takeHit(player1.facing, player1.meleeDamage)
         
-        player2.takeHit(player1.facing)
-        console.log(player2.currentImage)
       }
       // P2 attacks
       if (
@@ -50,8 +50,10 @@ export default function detectHits(player1, player2, player1Projectile, player2P
         &&
         player2.isAttacking
       ) {
-        player1.takeHit(player2.facing)
+        player2.isAttacking= false
+        player1.takeHit(player2.facing, player2.meleeDamage)
       }
+
       if (player2Projectile){
         if (
         (player2Projectile.attackBox.position.x + player2Projectile.attackBox.width >=
@@ -72,35 +74,38 @@ export default function detectHits(player1, player2, player1Projectile, player2P
           &&
         player2Projectile.attackBox.position.y <= player1.position.y + player1.height 
       ) {
-        player1.takeHit(player2Projectile.facing)
+        
+        player1.takeHit(player2Projectile.facing, player2Projectile.damage)
+        player2Projectile = null
       }
       }
       
-    if(player1Projectile){
-        if (
-            (player1Projectile.attackBox.position.x + player1Projectile.attackBox.width >=
-              player2.position.x 
-              &&
-            player1Projectile.attackBox.position.x + player1Projectile.attackBox.width <=
-              player2.position.x + player2.width
-              ||
-              player1Projectile.position.x - player1Projectile.attackBox.width <=
-              player2.position.x
-              &&
-            player1Projectile.position.x >=
-              player2.position.x
-              )     
-              &&
-            player1Projectile.attackBox.position.y + player1Projectile.attackBox.height >=
-              player2.position.y 
-              &&
-            player1Projectile.attackBox.position.y <= player2.position.y + player2.height 
-          ) {
-            player2.takeHit(player1Projectile.facing)
-          }
+    // if(player1Projectile){
+    //     if (
+    //         (player1Projectile.attackBox.position.x + player1Projectile.attackBox.width >=
+    //           player2.position.x 
+    //           &&
+    //         player1Projectile.attackBox.position.x + player1Projectile.attackBox.width <=
+    //           player2.position.x + player2.width
+    //           ||
+    //           player1Projectile.position.x - player1Projectile.attackBox.width <=
+    //           player2.position.x
+    //           &&
+    //         player1Projectile.position.x >=
+    //           player2.position.x
+    //           )     
+    //           &&
+    //         player1Projectile.attackBox.position.y + player1Projectile.attackBox.height >=
+    //           player2.position.y 
+    //           &&
+    //         player1Projectile.attackBox.position.y <= player2.position.y + player2.height 
+    //       ) {
+
+    //         player2.takeHit(player1Projectile.facing, player1Projectile.damage)
+    //       }
         
 
-    }
+    // }
 
     if(player1Projectile){
       if (
@@ -122,7 +127,11 @@ export default function detectHits(player1, player2, player1Projectile, player2P
             &&
           player1Projectile.attackBox.position.y <= player2.position.y + player2.height 
         ) {
-          player2.takeHit(player1Projectile.facing)
+          let p1Projectile = {...player1Projectile} 
+
+          let damage= p1Projectile.damage
+          let facing= p1Projectile.facing
+          player2.takeHit(facing, damage)
         }
       
 
