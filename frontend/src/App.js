@@ -9,6 +9,7 @@ import About from "./components/AboutMe";
 import Contact from "./components/Contact";
 import Resume from "./components/Resume"
 import Why from "./components/Why";
+import Games from "./components/Games";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -24,6 +25,7 @@ function App() {
           <Route path= "/contact" element={<Contact />}></Route>
           <Route path= "/resume" element={<Resume />}></Route>
           <Route path= "/why" element={<Why />}></Route>
+          <Route path = "/games"  element = {<Games />}></Route>
 
         </Routes>
 
